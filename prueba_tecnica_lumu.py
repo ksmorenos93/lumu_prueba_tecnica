@@ -5,7 +5,7 @@ import time as std_time
 import requests
 
 cwd = os.getcwd()
-os.chdir(r"D:\Pruebas_tecnicas\lumu\lumu_prueba_tecnica")
+os.chdir(cwd)
 
 
 URL = "https://api.lumu.io/collectors/5ab55d08-ae72-4017-a41c-d9d735360288/dns/queries?key=d39a0f19-7278-4a64-a255-b7646d1ace80"
