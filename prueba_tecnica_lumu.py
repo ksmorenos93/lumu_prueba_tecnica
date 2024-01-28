@@ -79,25 +79,28 @@ sorted_name_count = dict(sorted(name_count.items(), key=lambda x: x[1], reverse=
 # Calculate the total count of names
 total_count = sum(sorted_name_count.values())
 
-# Create and print the table
+# Create and print the table for name_count
 print(f"\nHost Rank")
 
 
 print("-" * 120)
 for name, count in sorted_name_count.items():
     percentage = (count / total_count) * 100
-    print(f"{name.ljust(90)}{str(count).rjust(15)}{f'{percentage:.2f}%'.rjust(15)}")
+    print(f"{name.ljust(50)}{str(count).rjust(15)}{f'{percentage:.2f}%'.rjust(15)}")
 
 ### make the requests
-for i,dictionary in enumerate(json_body):
-    
-    start_time = std_time.time()
-    print(i)
-    response = requests.post(url, json=json.loads(dictionary), headers=headers)
-    end_time = std_time.time()
-    elapsed_time = end_time - start_time
-    print(elapsed_time)
-    print(response)
+chunk_size = 500
+for i in range(0, len(json_body), chunk_size):
+    chunk = json_body[i:i+chunk_size]
+
+    for j, dictionary in enumerate(chunk):
+        start_time = std_time.time()
+        print(f"Chunk:{i} Dictionary:{j}")
+        response = requests.post(url, json=json.loads(dictionary), headers=headers)
+        end_time = std_time.time()
+        elapsed_time = end_time - start_time
+        print(elapsed_time)
+        print(response)
 
      
 
