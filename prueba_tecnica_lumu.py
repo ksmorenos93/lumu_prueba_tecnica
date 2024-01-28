@@ -1,14 +1,14 @@
-import os
 from datetime import datetime
-import requests
-import json 
+import json
+import os
 import time as std_time
+import requests
 
 cwd = os.getcwd()
 os.chdir(r"D:\Pruebas_tecnicas\lumu\lumu_prueba_tecnica")
 
 
-url = "https://api.lumu.io/collectors/5ab55d08-ae72-4017-a41c-d9d735360288/dns/queries?key=d39a0f19-7278-4a64-a255-b7646d1ace80"
+URL = "https://api.lumu.io/collectors/5ab55d08-ae72-4017-a41c-d9d735360288/dns/queries?key=d39a0f19-7278-4a64-a255-b7646d1ace80"
 
 headers = {
     "Content-Type": "application/json"
@@ -17,16 +17,16 @@ headers = {
 json_body = []
 ip_count= {}
 name_count = {}
- 
+
 with open("queries") as my_file:
     lines = my_file.readlines()
     # for item,value in enumerate(lines[0].split()):
-    #         print(item,value)
-      
+    #         print(item,value) 
+    
     for line in lines:
         name=line.split()[9]
         fecha=line.split()[0]
-        time= line.split()[1] 
+        time= line.split()[1]
         # Convert the date_str to a datetime object
         date_datetime = datetime.strptime(fecha, '%d-%b-%Y')
 
@@ -37,10 +37,10 @@ with open("queries") as my_file:
                                                 microsecond=int(time[9:]) * 1000)
 
         # Format the combined_datetime as a string in the desired format
-        timestamp = combined_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'       
+        timestamp = combined_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z' 
         client_ip= line.split()[6].split("#")[0]
 
-        ##this is for the count of name and ips. 
+        ##this is for the count of Host names and IPs. 
         ip_count[client_ip] = ip_count.get(client_ip, 0) + 1
         name_count[name] = name_count.get(name, 0) + 1
 
@@ -65,7 +65,7 @@ total_count = sum(sorted_ip_count.values())
 # Create and print the table for Clients IPs Rank
 
 print(f"\nTotal records {len(json_body)}\n")
-print(f"Clients IPs Rank")
+print("Clients IPs Rank")
 
 print("-" * 50)
 for ip, count in sorted_ip_count.items():
@@ -80,7 +80,7 @@ sorted_name_count = dict(sorted(name_count.items(), key=lambda x: x[1], reverse=
 total_count = sum(sorted_name_count.values())
 
 # Create and print the table for name_count
-print(f"\nHost Rank")
+print("\nHost Rank")
 
 
 print("-" * 120)
@@ -96,7 +96,7 @@ for i in range(0, len(json_body), chunk_size):
     for j, dictionary in enumerate(chunk):
         start_time = std_time.time()
         print(f"Chunk:{i} Dictionary:{j}")
-        response = requests.post(url, json=json.loads(dictionary), headers=headers)
+        response = requests.post(URL, json=json.loads(dictionary), headers=headers)
         end_time = std_time.time()
         elapsed_time = end_time - start_time
         print(elapsed_time)
